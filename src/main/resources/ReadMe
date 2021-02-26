@@ -1,0 +1,25 @@
+Mapstruct 
+I always follow 3 principle of learning.
+Why? What? How?
+
+What is it?
+It is a library, can generate bean mapper classes automatically.
+
+Why do we need it ?
+A lot of boilerplate code converting POJOs to other POJOs. so that we can avoid writing it while coding our main functionality.
+
+Pre-requisite :
+
+Need to add dependency
+annotationProcessorPaths section which will use to generate the mapper implementation during build.
+
+Remember :
+
+An instance of the interface implementation can be retrieved from the Mappers class.
+For example :
+ private SimpleSourceDestination destination = Mappers.getMapper(SimpleSourceDestination.class);
+
+Note: to use spring IOC in our mapper then we need to annotate your interface with this annotation.
+@Mapper(componentModel = “spring”)
+
+
