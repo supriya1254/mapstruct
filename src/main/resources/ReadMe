@@ -5,16 +5,21 @@ Why? What? How?
 What is it?
 It is a library, can generate bean mapper classes automatically.
 
+----------------------------------------------------------------------------------------------------
+
 Why do we need it ?
-A lot of boilerplate code converting POJOs to other POJOs. so that we can avoid writing it while coding our main functionality.
+A lot of boilerplate code converting POJOs to other POJOs. so that we can avoid writing it while
+coding our main functionality.
+
+----------------------------------------------------------------------------------------------------
 
 Pre-requisite :
-
 Need to add dependency
 annotationProcessorPaths section which will use to generate the mapper implementation during build.
 
-Remember :
+----------------------------------------------------------------------------------------------------
 
+Remember :
 An instance of the interface implementation can be retrieved from the Mappers class.
 For example :
  private SimpleSourceDestination destination = Mappers.getMapper(SimpleSourceDestination.class);
@@ -22,4 +27,46 @@ For example :
 Note: to use spring IOC in our mapper then we need to annotate your interface with this annotation.
 @Mapper(componentModel = “spring”)
 
+----------------------------------------------------------------------------------------------------
+
+So what if a bean we are about to map has a different field name?
+
+Question : source fields -----map----> target fields
+
+Solution : add @Mappings annotation.
+
+            @Mappings({
+                    @Mapping(target = "", source = ""),
+                    @Mapping(target = "", source = "").....
+            })
+
+----------------------------------------------------------------------------------------------------
+
+@BeforeMapping and @AfterMapping Annotations
+---> These annotations are used to mark methods that are invoked right before and after the mapping logic.
+
+
+----------------------------------------------------------------------------------------------------
+
+@MappingTarget -----> parameter annotation
+
+ It populates the target mapping
+  ---> right before the mapping logic is executed in case of @BeforeMapping
+  ---> right after in case of @AfterMapping annotated method.
+
+----------------------------------------------------------------------------------------------------
+
+defaultExpression
+  ----> that determines the value of the destination field if the source field is null.
+
+  Example : when id is null in source class.
+
+  @Mapper
+  public interface PersonMapper {
+      PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
+
+      @Mapping(target = "id", source = "person.id",
+        defaultExpression = "java(java.util.UUID.randomUUID().toString())") //here we used.
+      PersonDTO personToPersonDTO(Person person);
+  }
 
